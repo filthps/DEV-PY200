@@ -8,6 +8,7 @@ class LinkedList:
         """Конструктор связного списка"""
         self.len = 0
         self.head: Optional[Node] = None
+        #self.tail: Optional[Node] = None
 
         if data is not None:
             for value in data:
@@ -22,6 +23,7 @@ class LinkedList:
         else:
             last_index = self.len - 1
             last_node = self.step_by_step_on_nodes(last_index)
+            #self.tail = last_node
 
             self.linked_nodes(last_node, append_node)
 
@@ -66,7 +68,18 @@ class LinkedList:
         node.value = value
 
     def __delitem__(self, index: int):
-        ...  # TODO проверка индекса
+        to_del_item = self.step_by_step_on_nodes(index)
+        if not self.head:  # Список пуст
+            raise IndexError
+        if self.head is to_del_item:  # 1 Элемент
+            self.head = None
+            self.len = 0
+        else:  # Штатная ситуация, элементы вокруг удаляемого
+            previous_node = self.step_by_step_on_nodes(index - 1)
+            previous_node.set_next(to_del_item.next)
+            to_del_item.next = None
+            self.len -= 1
+
 
         ...  # TODO алгоритм удаления
 

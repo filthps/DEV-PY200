@@ -10,26 +10,26 @@ files:
   visible: true
   placeholders:
   - offset: 246
-    length: 43
+    length: 49
     placeholder_text: '...  # TODO инициализировать связный список'
     initial_state:
       length: 43
       offset: 246
     initialized_from_dependency: false
-    selected: false
+    selected: true
     status: Unchecked
     encrypted_possible_answer: |-
       if data is not None:
                   for value in data:
                       self.append(value)
-  - offset: 1481
-    length: 75
+  - offset: 1487
+    length: 246
     placeholder_text: '...  # TODO реализовать алгоритм добавления узла в конец последовательности'
     initial_state:
       length: 75
       offset: 1481
     initialized_from_dependency: false
-    selected: false
+    selected: true
     status: Unchecked
     encrypted_possible_answer: |-
       append_node = Node(value)

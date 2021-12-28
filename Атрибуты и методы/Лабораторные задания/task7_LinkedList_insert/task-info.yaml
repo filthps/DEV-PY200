@@ -20,7 +20,7 @@ files:
       length: 49
       offset: 2863
     initialized_from_dependency: false
-    selected: false
+    selected: true
     status: Unchecked
     encrypted_possible_answer: |-
       if not isinstance(index, int):
