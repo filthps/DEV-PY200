@@ -9,7 +9,7 @@ files:
 - name: main.py
   visible: true
   placeholders:
-  - offset: 1391
+  - offset: 1389
     length: 10
     placeholder_text: '...  # TODO подставьте нужную ошибку'
     initial_state:
@@ -17,9 +17,9 @@ files:
       offset: 1391
     initialized_from_dependency: false
     selected: true
-    status: Failed
+    status: Solved
     encrypted_possible_answer: IndexError()
-  - offset: 1715
+  - offset: 1712
     length: 17
     placeholder_text: '# TODO'
     initial_state:
@@ -27,11 +27,11 @@ files:
       offset: 1692
     initialized_from_dependency: false
     selected: true
-    status: Failed
+    status: Solved
     encrypted_possible_answer: |-
       node = self.step_by_step_on_nodes(index)
               return node.value
-  - offset: 1773
+  - offset: 1770
     length: 63
     placeholder_text: '...  # TODO Метод to_list реализовать через list comprehension.'
     initial_state:
@@ -39,28 +39,28 @@ files:
       offset: 1739
     initialized_from_dependency: false
     selected: true
-    status: Failed
+    status: Solved
     encrypted_possible_answer: return [linked_list_value for linked_list_value in
       self]
-  - offset: 1877
-    length: 37
+  - offset: 1874
+    length: 53
     placeholder_text: '...  # TODO c помощью метода to_list реализовать данный метод'
     initial_state:
       length: 61
       offset: 1843
     initialized_from_dependency: false
     selected: true
-    status: Failed
+    status: Solved
     encrypted_possible_answer: return f"{self.__class__.__name__}({self.to_list()})"
-  - offset: 1954
-    length: 30
+  - offset: 1967
+    length: 26
     placeholder_text: '...  # TODO c помощью метода to_list реализовать данный метод'
     initial_state:
       length: 61
       offset: 1944
     initialized_from_dependency: false
     selected: true
-    status: Failed
+    status: Solved
     encrypted_possible_answer: return f"{self.to_list()}"
   text: |
     from typing import Iterable, Optional, Any
@@ -178,12 +178,8 @@ files:
             self.is_valid(next_)
             self.next = next_
   learner_created: false
-status: Failed
+status: Solved
 feedback:
-  message: Incorrect
-  time: Tue, 28 Dec 2021 17:46:29 UTC
-  expected: |
-    [1, 2, 3]
-    LinkedList([1, 2, 3])
-  actual: <no output>
+  message: Congratulations!
+  time: Sun, 09 Jan 2022 18:43:53 UTC
 record: -1

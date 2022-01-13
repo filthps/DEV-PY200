@@ -22,9 +22,7 @@ class LinkedList:
         else:
             last_index = self.len - 1
             last_node = self.step_by_step_on_nodes(last_index)
-
             self.linked_nodes(last_node, append_node)
-
         self.len += 1
 
     def __len__(self):
@@ -52,7 +50,6 @@ class LinkedList:
         current_node = self.head
         for _ in range(index):
             current_node = current_node.next
-
         return current_node
 
     def __getitem__(self, index: int) -> Any:
@@ -64,10 +61,10 @@ class LinkedList:
         return [val for val in self]  # цикл вызывает --> __getitem__()
 
     def __repr__(self) -> str:
-        return f"{self.__class__(self.data)}"
+        return f"{self.__class__.__name__}({self.to_list()})"
 
     def __str__(self) -> str:
-        return "".join(self.to_list())
+        return str(self.to_list())
 
 
 if __name__ == '__main__':

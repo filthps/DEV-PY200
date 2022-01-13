@@ -17,7 +17,7 @@ files:
       offset: 246
     initialized_from_dependency: false
     selected: true
-    status: Unchecked
+    status: Solved
     encrypted_possible_answer: |-
       if data is not None:
                   for value in data:
@@ -30,7 +30,7 @@ files:
       offset: 1481
     initialized_from_dependency: false
     selected: true
-    status: Unchecked
+    status: Solved
     encrypted_possible_answer: |-
       append_node = Node(value)
 
@@ -144,5 +144,8 @@ files:
             self.is_valid(next_)
             self.next = next_
   learner_created: false
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sun, 09 Jan 2022 18:03:37 UTC
 record: -1
