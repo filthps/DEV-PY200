@@ -70,4 +70,15 @@ class LinkedList:
         return f"{self.to_list()}"
 
 
-# TODO Реализовать класс DoubleLinkedList
+class DoubleLinkedList(LinkedList):
+    def __init__(self, data):
+        super.__init__(data)
+        self._prev = None
+
+    @property
+    def prev(self):
+        pass
+
+    @prev.setter
+    def prev(self):
+        pass
