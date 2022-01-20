@@ -21,7 +21,7 @@ files:
       offset: 2238
     initialized_from_dependency: false
     selected: false
-    status: Unchecked
+    status: Failed
     encrypted_possible_answer: |-
       current_node = self.head
               for _ in range(self.len):
@@ -35,7 +35,7 @@ files:
       offset: 2297
     initialized_from_dependency: false
     selected: false
-    status: Unchecked
+    status: Failed
     encrypted_possible_answer: |-
       def __contains__(self, item):
               print("Вызван метод \"__contains__\"")
@@ -168,5 +168,26 @@ files:
             self.is_valid(next_)
             self._next = next_
   learner_created: false
-status: Unchecked
+status: Failed
+feedback:
+  message: Incorrect
+  time: Fri, 14 Jan 2022 18:58:53 UTC
+  expected: |
+    Проверка вхождения числа 2 в связный список
+    Вызван метод "__contains__"
+    True
+    Проверка вхождения числа 5 в связный список
+    Вызван метод "__contains__"
+    False
+  actual: |
+    Проверка вхождения числа 2 в связный список
+    Вызван метод "__getitem__"
+    Вызван метод "__getitem__"
+    True
+    Проверка вхождения числа 5 в связный список
+    Вызван метод "__getitem__"
+    Вызван метод "__getitem__"
+    Вызван метод "__getitem__"
+    Вызван метод "__getitem__"
+    False
 record: -1

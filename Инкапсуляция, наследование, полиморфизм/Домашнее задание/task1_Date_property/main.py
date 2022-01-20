@@ -6,30 +6,61 @@ class Date:
     )
 
     def __init__(self, day: int, month: int, year: int):
-        self.day = day
-        self.month = month
-        self.year = year
+        self._day = day
+        self._month = month
+        self._year = year
 
         self.is_valid_date(self.day, self.month, self.year)
 
-    # TODO какой декоратор следует применить?
-    def is_leap_year(self, year: int) -> bool:
+    @staticmethod
+    def is_leap_year(year: int) -> bool:
         """Проверяет, является ли год високосным"""
-        ...  # TODO записать условие проверки високосного года
+        return year % 4 == 0
 
-    def get_max_day(self, month: int, year: int) -> int:
+    @classmethod
+    def get_max_day(cls, month: int, year: int) -> int:
         """Возвращает максимальное количество дней в месяце для указанного года"""
-        ...  # TODO вернуть количество дней указанного месяца
+        return cls.DAY_OF_MONTH[cls.is_leap_year(year)][month]
 
-    def is_valid_date(self, day: int, month: int, year: int) -> None:
+    @staticmethod
+    def is_valid_date(day: int, month: int, year: int) -> None:
         """Проверяет, является ли дата корректной"""
-        ...  # TODO если указанный набор день, месяц и год неверны, то вызвать ошибку ValueError
+        #if 0 > day >
 
-    # TODO записать getter и setter для дня
+    @property
+    def day(self):
+        return self._day
 
-    # TODO записать getter и setter для месяца
+    @day.setter
+    def day(self, value):
+        if not isinstance(value, int):
+            raise TypeError
 
-    # TODO записать getter и setter для года
+        if value > self.get_max_day(value, self._year):
+            raise ValueError
+        self._day = value
+
+    @property
+    def month(self):
+        return self._month
+
+    @month.setter
+    def month(self, val):
+        if not isinstance(val, int):
+            raise TypeError
+        if val > 12:
+            raise ValueError
+        self._month = val
+
+    @property
+    def year(self):
+        return self._year
+
+    @year.setter
+    def year(self, value):
+        if not isinstance(value, int):
+            raise TypeError
+        self._year = value
 
 
 if __name__ == "__main__":
