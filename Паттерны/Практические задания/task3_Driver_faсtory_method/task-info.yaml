@@ -8,14 +8,14 @@ files:
 - name: main.py
   visible: true
   placeholders:
-  - offset: 94
-    length: 36
+  - offset: 266
+    length: 0
     placeholder_text: '# TODO Реализовать абстрактный класс'
     initial_state:
       length: 36
       offset: 94
     initialized_from_dependency: false
-    selected: false
+    selected: true
     status: Unchecked
     encrypted_possible_answer: |-
       class DriverFactoryMethod(ABC):
@@ -23,14 +23,14 @@ files:
           @abstractmethod
           def get_driver(cls) -> IStructureDriver:
               ...
-  - offset: 578
-    length: 63
+  - offset: 752
+    length: 36
     placeholder_text: '...  # TODO с помощью фабричного метода инциализировать драйвер'
     initial_state:
       length: 63
       offset: 578
     initialized_from_dependency: false
-    selected: false
+    selected: true
     status: Unchecked
     encrypted_possible_answer: SimpleFileFactoryMethod.get_driver()
   text: |
