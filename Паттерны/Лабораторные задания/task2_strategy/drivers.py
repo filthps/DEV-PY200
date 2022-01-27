@@ -24,29 +24,35 @@ class IStructureDriver(ABC):
 
 
 class SimpleFileDriver(IStructureDriver):
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self, driver_name=""):
+        self.name = driver_name
 
-    def read(self) -> Iterable:
-        with open(self.filename) as f:
-            return [int(line) for line in f]
+    def read(self):
+        with open(self.name) as f:
+            return [i for i in f]
 
-    def write(self, data: Iterable) -> None:
-        with open(self.filename, "w") as f:
-            for value in data:
-                f.write(str(value))
-                f.write('\n')
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}(\"{self.filename}\")"
+    def write(self, data):
+        with open(self.name, "wt") as file:
+            for i in data:
+                file.write(i)
 
 
-# TODO
+class JsonFileDriver(IStructureDriver):
+    def __init__(self, driver_name=""):
+        self.name = driver_name
+
+    def read(self):
+        with open(self.name) as f:
+            return [json.loads(i) for i in f]
+
+    def write(self, data):
+        with open(self.name, "wt") as file:
+            for i in data:
+                file.write(json.dumps(i) + "\n")
 
 
 if __name__ == '__main__':
     write_data = [1, 2, 3]
-    driver = SimpleFileDriver('tmp.txt')
     driver.write(write_data)
 
     read_data = driver.read()
