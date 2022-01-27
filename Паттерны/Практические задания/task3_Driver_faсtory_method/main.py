@@ -3,13 +3,20 @@ from abc import ABC, abstractmethod
 from drivers import IStructureDriver, SimpleFileDriver
 
 
-# TODO Реализовать абстрактный класс
+class DriverFactoryMethod(ABC):
+    """
+    Абстрактная "фабрика"
+    """
+    @classmethod # Если тут classmethod
+    @abstractmethod
+    def get_driver(cl):
+        pass
 
 
 class SimpleFileFactoryMethod(DriverFactoryMethod):
     DEFAULT_NAME = 'untitled.txt'
 
-    @classmethod
+    @classmethod  # то и здесь нужно сделать classmethod
     def get_driver(cls) -> IStructureDriver:
         filename = input('Введите название текстового файла: (.txt): ').strip()
         filename = filename or cls.DEFAULT_NAME
@@ -20,5 +27,5 @@ class SimpleFileFactoryMethod(DriverFactoryMethod):
 
 
 if __name__ == '__main__':
-    driver = ...  # TODO с помощью фабричного метода инциализировать драйвер
+    driver = SimpleFileFactoryMethod.get_driver()
     print(driver)

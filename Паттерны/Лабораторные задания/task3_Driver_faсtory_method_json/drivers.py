@@ -42,6 +42,7 @@ class SimpleFileDriver(IStructureDriver):
 
 
 class JsonFileDriver(IStructureDriver):
+<<<<<<< HEAD
     def __init__(self, name):
         self.file = name
 
@@ -55,6 +56,30 @@ class JsonFileDriver(IStructureDriver):
 
     def __repr__(self):
         return f"{self.__class__.__name__}(\"{self.file}\")"
+=======
+
+    def __init__(self, name):
+        self.file_name = name
+
+    def read(self):
+        """
+        Чтение содержимого из json файла
+        """
+        with open(self.FILE) as file:
+            for line in file:
+                json.loads(line)
+
+    def write(self, data):
+        """
+        Запись содержимого в json файл
+        """
+        with open(self.FILE, "wt") as fi:
+            for item in data:
+                fi.write(str(item))
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(\"{self.file_name}\")"
+>>>>>>> a64aa4b10334e8b24517aa7b2eef563505be7b28
 
 
 if __name__ == '__main__':

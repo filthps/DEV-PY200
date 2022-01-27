@@ -3,8 +3,8 @@ files:
 - name: main.py
   visible: true
   placeholders:
-  - offset: 421
-    length: 54
+  - offset: 418
+    length: 88
     placeholder_text: |-
       # TODO какой декоратор следует применить?
           def is_leap_year(self, year: int) -> bool:
@@ -12,13 +12,13 @@ files:
       length: 88
       offset: 418
     initialized_from_dependency: false
-    selected: true
+    selected: false
     status: Solved
     encrypted_possible_answer: |-
       @staticmethod
           def is_leap_year(year: int) -> bool:
-  - offset: 536
-    length: 20
+  - offset: 567
+    length: 54
     placeholder_text: '...  # TODO записать условие проверки високосного года'
     initial_state:
       length: 54
@@ -29,8 +29,8 @@ files:
     encrypted_possible_answer: |-
       leap_condition = ((year % 4) == 0 and (year % 100) != 0) or ((year % 400) == 0)
               return True if leap_condition else False
-  - offset: 722
-    length: 54
+  - offset: 771
+    length: 53
     placeholder_text: '...  # TODO вернуть количество дней указанного месяца'
     initial_state:
       length: 53
@@ -43,8 +43,8 @@ files:
               year_months = self.DAY_OF_MONTH[year_months_index]
 
               return year_months[month-1]
-  - offset: 921
-    length: 13
+  - offset: 957
+    length: 88
     placeholder_text: '...  # TODO если указанный набор день, месяц и год неверны,
       то вызвать ошибку ValueError'
     initial_state:
@@ -56,14 +56,14 @@ files:
     encrypted_possible_answer: |-
       if day > self.get_max_day(month, year):
                   raise ValueError
-  - offset: 954
+  - offset: 1051
     length: 39
     placeholder_text: '# TODO записать getter и setter для дня'
     initial_state:
       length: 39
       offset: 1051
     initialized_from_dependency: false
-    selected: true
+    selected: false
     status: Solved
     encrypted_possible_answer: |-
       @property
@@ -77,14 +77,14 @@ files:
               if not 1 <= day <= 31:
                   raise ValueError
               self._day = day
-  - offset: 1235
-    length: 229
+  - offset: 1096
+    length: 42
     placeholder_text: '# TODO записать getter и setter для месяца'
     initial_state:
       length: 42
       offset: 1096
     initialized_from_dependency: false
-    selected: true
+    selected: false
     status: Solved
     encrypted_possible_answer: |-
       @property
@@ -98,8 +98,8 @@ files:
               if not 1 <= month <= 12:
                   raise ValueError
               self._month = month
-  - offset: 1484
-    length: 41
+  - offset: 1144
+    length: 40
     placeholder_text: '# TODO записать getter и setter для года'
     initial_state:
       length: 40
@@ -161,7 +161,5 @@ files:
   visible: false
   learner_created: false
 status: Solved
-feedback:
-  time: Fri, 14 Jan 2022 18:55:44 UTC
 record: -1
 post_submission_on_open: true

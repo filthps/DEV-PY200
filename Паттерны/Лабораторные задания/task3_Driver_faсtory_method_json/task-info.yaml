@@ -1,5 +1,65 @@
 type: theory
 files:
+<<<<<<< HEAD
+=======
+- name: main.py
+  visible: true
+  placeholders:
+  - offset: 641
+    length: 373
+    placeholder_text: '# TODO реализовать класс JsonFileDriveFactoryMethod'
+    initial_state:
+      length: 51
+      offset: 641
+    initialized_from_dependency: false
+    selected: true
+    status: Solved
+    encrypted_possible_answer: |-
+      class JsonFileDriverFactoryMethod(DriverFactoryMethod):
+          DEFAULT_NAME = 'untitled.json'
+
+          @classmethod
+          def get_driver(cls) -> IStructureDriver:
+              filename = input('Введите название json файла: (.json)').strip()
+              filename = filename or cls.DEFAULT_NAME
+              if not filename.endswith('.json'):
+                  filename = f'{filename}.json'
+
+              return JsonFileDriver(filename)
+  text: |
+    from abc import ABC, abstractmethod
+
+    from drivers import IStructureDriver, SimpleFileDriver, JsonFileDriver
+
+
+    class DriverFactoryMethod(ABC):
+        @classmethod
+        @abstractmethod
+        def get_driver(cls) -> IStructureDriver:
+            ...
+
+
+    class SimpleFileFactoryMethod(DriverFactoryMethod):
+        DEFAULT_NAME = 'untitled.txt'
+
+        @classmethod
+        def get_driver(cls) -> IStructureDriver:
+            filename = input('Введите название текстового файла: (.txt)').strip()
+            filename = filename or cls.DEFAULT_NAME
+            if not filename.endswith('.txt'):
+                filename = f'{filename}.txt'
+
+            return SimpleFileDriver(filename)
+
+
+    # TODO реализовать класс JsonFileDriveFactoryMethod
+
+
+    if __name__ == '__main__':
+        driver = JsonFileDriverFactoryMethod.get_driver()
+        print(driver)
+  learner_created: false
+>>>>>>> a64aa4b10334e8b24517aa7b2eef563505be7b28
 - name: __init__.py
   visible: false
   learner_created: false
@@ -7,7 +67,11 @@ files:
   visible: true
   placeholders:
   - offset: 1172
+<<<<<<< HEAD
     length: 411
+=======
+    length: 577
+>>>>>>> a64aa4b10334e8b24517aa7b2eef563505be7b28
     placeholder_text: '# TODO'
     dependency:
       section: Паттерны
@@ -97,6 +161,7 @@ files:
         read_data = driver.read()
         print(read_data)
   learner_created: false
+<<<<<<< HEAD
 - name: main.py
   visible: true
   placeholders:
@@ -157,5 +222,8 @@ files:
 status: Solved
 feedback:
   time: Fri, 21 Jan 2022 13:15:45 UTC
+=======
+status: Solved
+>>>>>>> a64aa4b10334e8b24517aa7b2eef563505be7b28
 record: -1
 post_submission_on_open: true
