@@ -3,13 +3,8 @@ files:
 - name: main.py
   visible: true
   placeholders:
-<<<<<<< HEAD
-  - offset: 1172
-    length: 365
-=======
   - offset: 1171
     length: 433
->>>>>>> a64aa4b10334e8b24517aa7b2eef563505be7b28
     placeholder_text: '# TODO Реализовать класс JsonFileDriver'
     initial_state:
       length: 39
@@ -92,11 +87,5 @@ files:
   visible: false
   learner_created: false
 status: Solved
-feedback:
-<<<<<<< HEAD
-  time: Fri, 21 Jan 2022 13:12:31 UTC
-=======
-  time: Thu, 20 Jan 2022 17:42:52 UTC
->>>>>>> a64aa4b10334e8b24517aa7b2eef563505be7b28
 record: -1
 post_submission_on_open: true
