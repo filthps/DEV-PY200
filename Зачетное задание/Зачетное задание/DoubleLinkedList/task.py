@@ -1,3 +1,4 @@
+from typing import Iterable
 from collections.abc import MutableSequence
 from node import Node, DoubleLinkedNode
 
@@ -5,7 +6,7 @@ from node import Node, DoubleLinkedNode
 class LinkedList(MutableSequence):
     NODE = Node
     
-    def __init__(self, items):
+    def __init__(self, items: Iterable = []):
         self._head = None
         self._tail = None
         self._length = 0
@@ -14,6 +15,8 @@ class LinkedList(MutableSequence):
             self.append(i)
 
     def append(self, value) -> None:  # todo: написать тест
+        # if not bool(value):
+        #     return
         new_node = self.NODE(value)
         if self._head is None:
             self._head = self._tail = new_node
@@ -40,17 +43,19 @@ class LinkedList(MutableSequence):
     def add_link(left_node: Node, right_node: Node):
         left_node.next = right_node
 
-    def is_valid_index(self, index):
+    def is_valid_index(self, index) -> bool:
         if type(index) is not int:
             raise TypeError
-        if 0 > index < self._length:
+        if 0 >= index > self._length:
             raise IndexError
+        return True
         
-    def is_valid_node(self, node):
+    def is_valid_node(self, node) -> bool:
         if not isinstance(node, self.__class__.NODE):
             raise TypeError
+        return True
 
-    def find_node(self, index):
+    def find_node(self, index: int):
         return self.move_from_head(index)
 
     def move_from_head(self, index):  # todo negative index, index error???
@@ -62,6 +67,8 @@ class LinkedList(MutableSequence):
                 return current_node
             else:
                 return None
+        if index == 0:
+            return current_node
 
     def __getitem__(self, i):
         self.is_valid_index(i)
@@ -126,6 +133,8 @@ class LinkedList(MutableSequence):
             self.is_valid_node(item)
         except TypeError:
             return False
+        except IndexError:
+            return False
         for node in self:
             if node is item:
                 return True
@@ -141,6 +150,8 @@ class LinkedList(MutableSequence):
         try:
             self.is_valid_node(node)
         except TypeError:
+            raise ValueError
+        except IndexError:
             raise ValueError
         node_from_container = None
         counter = 0
