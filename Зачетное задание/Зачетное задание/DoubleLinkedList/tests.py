@@ -1,5 +1,7 @@
 import unittest
 from random import choice
+import sys
+
 from node import Node, DoubleLinkedNode
 from task import LinkedList, DoubleLinkedList
 
@@ -10,8 +12,7 @@ class TestNode(unittest.TestCase):
         node = Node(1)
         node_1 = Node(2)
         not_node_object = "123"
-        with self.failUnlessRaises(TypeError):
-            node.next = node_1
+        node.next = node_1
         with self.assertRaises(TypeError):
             node.next = not_node_object
 
@@ -30,8 +31,7 @@ class TestDoubleNode(unittest.TestCase):
         node = DoubleLinkedNode(1)
         node_1 = DoubleLinkedNode(2)
         invalid_object = "123"
-        with self.failUnlessRaises(TypeError):
-            node.next = node_1
+        node.next = node_1
         with self.assertRaises(TypeError):
             node.next = invalid_object
 
@@ -45,22 +45,22 @@ class TestDoubleNode(unittest.TestCase):
 
 
 class TestLinkedNode(unittest.TestCase):
-    
+
     def test_append(self):
         end_index = 50
         empty_nodes_list = LinkedList()
         nodes_list = LinkedList(list(range(0, end_index)))
-
         val = 1
         empty_nodes_list.append(val)
         nodes_list.append(val)
+        self.assertEqual(int(str(nodes_list[end_index])), val)
+        self.assertEqual(int(str(empty_nodes_list[0])), val)
 
     def test_insert(self):
-        end_index = 50
-        nodes_list = LinkedList(list(range(0, end_index)))
-        
-        valid_index_tuple = (0, end_index - 1, 20, 2, 4, 6, 17)
-        bad_index = (end_index + 1, -1, 100, 0.1, "df", [2], 0.7, False, -3, -300, "4", bytes(0xf), None, True)
+        init_length = 201
+        nodes_list = LinkedList(range(init_length))
+        valid_index_tuple = (0, 2, 20, 2, 4, 6, 17)
+        bad_index = (-1, 3400, 0.1, "df", [2], 0.7, False, -3, -300, "4", bytes(0xf), None, True)
         falls_counter = 0
         for index in bad_index:
             try:
@@ -71,13 +71,13 @@ class TestLinkedNode(unittest.TestCase):
                 falls_counter += 1
         self.assertEqual(falls_counter, len(bad_index),
                          msg=f"Ожидалось {len(bad_index)} ошибок, выявлено {falls_counter}!")
+        nodes_list.insert(0, 1)  # В начало
+        nodes_list.insert(init_length, 1)  # В конец
+        nodes_list.insert(2, 1)  # В середину
         for _ in range(len(valid_index_tuple) ** 2):
-            nodes_list.insert(4, 1)  # В конец
-            nodes_list.insert(0, 1)  # В начало
-            nodes_list.insert(2, 1)  # В середину
             nodes_list.insert(choice(valid_index_tuple), 1)  # Произвольно
+        self.assertEqual(init_length + 3 + len(valid_index_tuple) ** 2, len(nodes_list))
 
-    @unittest.skip("Нет определённости относительно ссылки ноды на ссаму себя!")
     def test_add_link(self):
         node = DoubleLinkedNode(1)
         node_1 = DoubleLinkedNode(1)
@@ -88,8 +88,10 @@ class TestLinkedNode(unittest.TestCase):
         LinkedList.add_link(node_1, node)
         self.assertEqual(node_1.next, node)
 
-        LinkedList.add_link(node_1, node_1)
-        self.assertEqual(node_1.next, node_1)
+    def test_recursive_linked_node_on_self(self):
+        node = DoubleLinkedNode(1)
+        with self.assertRaises(ValueError):
+            LinkedList.add_link(node, node)
 
     def test_is_valid_index(self):
         end_index = 50
@@ -138,12 +140,8 @@ class TestLinkedNode(unittest.TestCase):
     def test_find_node(self):
         end_index = 50
         nodes_list = LinkedList(list(range(0, end_index)))
-
         node = nodes_list.find_node(0)
         self.assertIsInstance(node, Node)
-
-    def move_from_head(self):
-        ...
 
     def test_getitem__(self):
         pass
@@ -154,29 +152,63 @@ class TestLinkedNode(unittest.TestCase):
     def test_delitem__(self):
         ...
 
-    def __len__(self):
+    def test_len__(self):
         pass
 
-    def __str__(self):
-        pass
+    def test_str(self):
+        nodes = LinkedList([1, 2, 3])
+        node = nodes[1]
+        value = node.__str__()
+        self.assertIsInstance(value, str)
 
     def to_list(self):
         pass
 
-    def __repr__(self):
-        ...
+    def test_repr(self):
+        nodes = LinkedList([1, 2, 3])
+        repr_string = repr(nodes)
+        self.assertEqual(repr_string, "LinkedList([Node(1, next_=Node(2)), Node(2, next_=Node(3)), Node(3)])")
 
-    def iterator(self):
-        pass
+    def test_iterator(self):
+        end_index = 5
+        nodes_list = LinkedList(list(range(0, end_index)))
+        iterator = iter(nodes_list)
+        next_from_list = nodes_list[0]
+        for i in range(len(nodes_list)):
+            node_from_iterator = next(iterator)
+            if i == len(nodes_list) - 1:
+                with self.assertRaises(StopIteration):
+                    print("Зашли в блок условия i == len(nodes_list) - 1")
+                    next(iterator)
+            self.assertIs(node_from_iterator, next_from_list)
+            next_from_list = next_from_list.next
 
-    def __iter__(self):
-        pass
+    def test_iter(self):
+        nodes_list = LinkedList(list(range(0, 3)))
+        nodes_list_iter = iter(nodes_list)
+        try:
+            next(nodes_list_iter)
+        except StopIteration:
+            pass
 
-    def __contains__(self, item):
-        pass
+    def test_contains(self):
+        nodes_list = LinkedList(list(range(0, 5)))
+        node_from_collection = nodes_list[1]
+        node = Node(2)
+        self.assertEqual(nodes_list.__contains__(node_from_collection), True)
+        self.assertEqual(nodes_list.__contains__(node), False)
+        bad_values = (node, -1, 3400, 0.1, "df", [2], 0.7, False, -3, -300, "4", bytes(0xf), None, True, nodes_list)
+        for val in bad_values:
+            self.assertEqual(nodes_list.__contains__(val), False)
 
-    def pop(self, index: int = ...):  # ...??
-        pass
+    @unittest.skip("")
+    def test_pop(self):
+        nodes_list = LinkedList(list(range(3)))
+        last_node = nodes_list[2]
+        middle_node = nodes_list[1]
+        first_node = nodes_list[0]
+        val = nodes_list.pop(-1)
+        self.assertIs(nodes_list.pop(-1), last_node)
 
     def remove(self, node=None) -> None:
         pass
