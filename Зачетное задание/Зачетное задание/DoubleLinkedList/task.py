@@ -6,7 +6,7 @@ from node import Node, DoubleLinkedNode
 class LinkedList(MutableSequence):
     NODE = Node
     
-    def __init__(self, items: Iterable = []):
+    def __init__(self, items: Iterable = ()):
         self._head = None
         self._tail = None
         self._length = 0
@@ -14,9 +14,7 @@ class LinkedList(MutableSequence):
         for i in items:
             self.append(i)
 
-    def append(self, value) -> None:  # todo: написать тест
-        # if not bool(value):
-        #     return
+    def append(self, value) -> None:
         new_node = self.NODE(value)
         if self._head is None:
             self._head = self._tail = new_node
@@ -25,18 +23,20 @@ class LinkedList(MutableSequence):
             self._tail = new_node
         self._length += 1
 
-    def insert(self, index: int, value) -> None:  # todo: написать тест
+    def insert(self, index: int, value) -> None:
         self.is_valid_index(index)
         node = self.NODE(value)
         if index == 0:
             self.add_link(node, self._head)
             self._head = node
-        elif index == self._length:  # fixme test case insert(does_not_exist_index) index > len
+        elif index == self._length:
             self.add_link(self._tail, node)
             self._tail = node
         else:
-            elem = self.find_node(index)
-            self.add_link(elem, node)  # fixme test case in middle
+            elem_prev = self.find_node(index - 1)
+            elem_next = elem_prev.next
+            self.add_link(elem_prev, node)
+            self.add_link(node, elem_next)
         self._length += 1
 
     @staticmethod
@@ -46,7 +46,7 @@ class LinkedList(MutableSequence):
     def is_valid_index(self, index) -> bool:
         if type(index) is not int:
             raise TypeError
-        if 0 >= index > self._length:
+        if 0 > index or index >= self._length:
             raise IndexError
         return True
         
@@ -119,14 +119,14 @@ class LinkedList(MutableSequence):
     def __repr__(self):
         return f"{self.__class__.__name__}({self.to_list()})"
 
-    def iterator(self):  # todo: написать тест
+    def iterator(self):
         current_node = self._head
         while current_node is not None:
             yield current_node
-            current_node = current_node.next  # test case ???
+            current_node = current_node.next
 
     def __iter__(self):
-        return self.iterator()
+         return self.iterator()
 
     def __contains__(self, item):
         try:
@@ -140,7 +140,9 @@ class LinkedList(MutableSequence):
                 return True
         return False
 
-    def pop(self, index: int = ...):  # ...??
+    def pop(self, index: int = -1):
+        if index < 0:
+            index = len(self) - index
         self.is_valid_index(index)
         elem = self.find_node(index)
         self.__delitem__(index)
@@ -177,9 +179,19 @@ class LinkedList(MutableSequence):
     def extend(self, items):
         if items.__class__ is self.__class__:
             for item in items:
-                self.append(item)
+                self.append(item.value)
         else:
             raise ValueError
+
+    def __add__(self, other):
+        self.is_valid_node(other)
+        self.append(other.value)
+
+    def __iadd__(self, other):
+        for item in other:
+            self.__add__(item)
+        return self
+
 
 
 class DoubleLinkedList(LinkedList):
