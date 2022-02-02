@@ -1,7 +1,5 @@
 import unittest
 from random import choice
-import sys
-
 from node import Node, DoubleLinkedNode
 from task import LinkedList, DoubleLinkedList
 
@@ -23,8 +21,8 @@ class TestNode(unittest.TestCase):
     def test_str(self):
         node = Node(2)
         self.assertEqual(str(node), "2")
-        
-        
+
+
 class TestDoubleNode(unittest.TestCase):
 
     def test_is_valid(self):
@@ -53,13 +51,14 @@ class TestLinkedNode(unittest.TestCase):
         val = 1
         empty_nodes_list.append(val)
         nodes_list.append(val)
-        self.assertEqual(int(str(nodes_list[end_index])), val)
-        self.assertEqual(int(str(empty_nodes_list[0])), val)
+        self.assertEqual(nodes_list[end_index], val)
+        self.assertEqual(empty_nodes_list[0], val)
 
     def test_insert(self):
-        init_length = 201
+        init_length = 40
         nodes_list = LinkedList(range(init_length))
-        valid_index_tuple = (0, 2, 20, 2, 4, 6, 17)
+        valid = {0: "34", 2: [1, 2, 3], 20: 123, 7: "+", 4: "t", 6: "$", 17: "&", 30: "/",
+                 1: DoubleLinkedList([1, 5]), 34: tuple(), 38: "*"}
         bad_index = (-1, 3400, 0.1, "df", [2], 0.7, False, -3, -300, "4", bytes(0xf), None, True)
         falls_counter = 0
         for index in bad_index:
@@ -71,12 +70,16 @@ class TestLinkedNode(unittest.TestCase):
                 falls_counter += 1
         self.assertEqual(falls_counter, len(bad_index),
                          msg=f"Ожидалось {len(bad_index)} ошибок, выявлено {falls_counter}!")
-        nodes_list.insert(0, 1)  # В начало
-        nodes_list.insert(init_length, 1)  # В конец
-        nodes_list.insert(2, 1)  # В середину
-        for _ in range(len(valid_index_tuple) ** 2):
-            nodes_list.insert(choice(valid_index_tuple), 1)  # Произвольно
-        self.assertEqual(init_length + 3 + len(valid_index_tuple) ** 2, len(nodes_list))
+        nodes_list.insert(0, 1)
+        nodes_list.insert(init_length, 1)
+        nodes_list.insert(2, 1)
+        for _ in range(len(valid) ** 2):
+            key = choice(tuple(valid.keys()))
+            value = valid[key]
+            nodes_list.insert(key, value)
+            self.assertEqual(nodes_list[key], value, msg="Куда-то потерялось значение! index={0}"
+                                                         ", value={1}".format(key, value))
+        self.assertEqual(init_length + 3 + len(valid) ** 2, len(nodes_list))
 
     def test_add_link(self):
         node = DoubleLinkedNode(1)
@@ -115,16 +118,14 @@ class TestLinkedNode(unittest.TestCase):
             except IndexError:
                 falls_counter_index += 1
         self.assertEqual(falls_counter_index, len(bad_index))
-
-        with self.assertRaises((IndexError, TypeError,)):
-            for index in valid_index:
-                value = nodes_list.is_valid_index(index)
-                self.assertEqual(value, True, msg="Вернулся неожиданный результат!")
+        for index in valid_index:
+            value = nodes_list.is_valid_index(index)
+            self.assertEqual(value, True, msg=f"Вернулся неожиданный результат")
 
     def test_is_valid_node(self):
         nodes_list = LinkedList(list(range(0, 5)))
-        nodes = [Node(1), Node(10), Node(-1), DoubleLinkedNode(2)]
-        not_nodes = (None, DoubleLinkedList([1, 2, 3]), "23424", 324, -1, LinkedList([1, 2, 3]), False)
+        nodes = [Node(1), Node(10), Node(-1), DoubleLinkedNode(2), None]
+        not_nodes = (DoubleLinkedList([1, 2, 3]), "23424", 324, -1, LinkedList([1, 2, 3]), False)
 
         for node in nodes:
             self.assertEqual(nodes_list.is_valid_node(node), True, msg="Вернулся неожиданный результат!")
@@ -143,78 +144,134 @@ class TestLinkedNode(unittest.TestCase):
         node = nodes_list.find_node(0)
         self.assertIsInstance(node, Node)
 
-    def test_getitem__(self):
-        pass
+    def test_getitem(self):
+        nodes_list = LinkedList(range(5))
+        val = nodes_list[2]
+        self.assertEqual(val, 2)
 
     def test_setitem__(self):
-        ...
+        val = 1
+        nodes_list = LinkedList(range(3))
+        nodes_list[0], nodes_list[1], nodes_list[2] = val, val, val
+        self.assertEqual(len(nodes_list), 3)
+        for i in nodes_list:
+            self.assertEqual(i, val)
 
-    def test_delitem__(self):
-        ...
+    def test_delitem(self):
+        values = [1, "test", 3, "last_value"]
+        nodes_list = LinkedList(values)
+        del nodes_list[3]
+        del nodes_list[0]
+        del nodes_list[2]
+        del nodes_list[1]
+        self.assertEqual(len(nodes_list), 0)
 
-    def test_len__(self):
-        pass
+    def test_len(self):
+        nodes = LinkedList([1, 2, 3])
+        length = len(nodes)
+        self.assertIsInstance(length, int)
+        self.assertEqual(length, 3)
 
     def test_str(self):
         nodes = LinkedList([1, 2, 3])
-        node = nodes[1]
-        value = node.__str__()
+        value = str(nodes)
         self.assertIsInstance(value, str)
+        self.assertEqual(value, "[1, 2, 3]")
 
-    def to_list(self):
-        pass
+    def test_to_list(self):
+        nodes = LinkedList([1, 2, 3])
+        list_ = nodes.to_list()
+        self.assertIs(type(list_), list)
+        self.assertEqual(len(nodes), 3)
 
     def test_repr(self):
         nodes = LinkedList([1, 2, 3])
         repr_string = repr(nodes)
-        self.assertEqual(repr_string, "LinkedList([Node(1, next_=Node(2)), Node(2, next_=Node(3)), Node(3)])")
+        self.assertEqual(repr_string, "LinkedList([1, 2, 3])")
 
     def test_iterator(self):
         end_index = 5
-        nodes_list = LinkedList(list(range(0, end_index)))
+        length = end_index - 1
+        nodes_list = LinkedList(range(end_index))
         iterator = iter(nodes_list)
-        next_from_list = nodes_list[0]
         for i in range(len(nodes_list)):
-            node_from_iterator = next(iterator)
-            if i == len(nodes_list) - 1:
-                with self.assertRaises(StopIteration):
-                    print("Зашли в блок условия i == len(nodes_list) - 1")
-                    next(iterator)
-            self.assertIs(node_from_iterator, next_from_list)
-            next_from_list = next_from_list.next
+            self.assertEqual(next(iterator), nodes_list[i])
+            if i > length:
+                raise IndexError("Итератор короче, чем длина последовательности!")
 
     def test_iter(self):
-        nodes_list = LinkedList(list(range(0, 3)))
+        nodes_list = LinkedList(range(3))
         nodes_list_iter = iter(nodes_list)
-        try:
-            next(nodes_list_iter)
-        except StopIteration:
-            pass
+        next(nodes_list_iter)
 
     def test_contains(self):
-        nodes_list = LinkedList(list(range(0, 5)))
-        node_from_collection = nodes_list[1]
-        node = Node(2)
-        self.assertEqual(nodes_list.__contains__(node_from_collection), True)
+        nodes_list = LinkedList(range(5))
+        value_from_collection = nodes_list[1]
+        node = Node(22)
+        self.assertEqual(nodes_list.__contains__(value_from_collection), True)
         self.assertEqual(nodes_list.__contains__(node), False)
-        bad_values = (node, -1, 3400, 0.1, "df", [2], 0.7, False, -3, -300, "4", bytes(0xf), None, True, nodes_list)
+        bad_values = (node, -1, 3400, 0.1, "df", [2], False, -3, -300, "4", bytes(0xf), None, True, nodes_list)
         for val in bad_values:
             self.assertEqual(nodes_list.__contains__(val), False)
 
-    @unittest.skip("")
     def test_pop(self):
-        nodes_list = LinkedList(list(range(3)))
-        last_node = nodes_list[2]
-        middle_node = nodes_list[1]
-        first_node = nodes_list[0]
-        val = nodes_list.pop(-1)
-        self.assertIs(nodes_list.pop(-1), last_node)
+        values = [1, "test", "last_value", 3]
+        nodes_list = LinkedList(values)
+        self.assertEqual(nodes_list.pop(1), "test")
+        self.assertEqual(nodes_list.pop(0), 1)
+        last_index = len(nodes_list) - 1
+        val = nodes_list.pop(last_index)
+        self.assertEqual(val, 3)
+        self.assertEqual(nodes_list.pop(-1), "last_value")
+        self.assertEqual(len(nodes_list), 0)
 
-    def remove(self, node=None) -> None:
-        pass
+    def test_remove(self):
+        values = [1, "test", 3, "last_value"]
+        nodes_list = LinkedList(values)
+        nodes_list.remove(3)
+        nodes_list.remove("test")
+        nodes_list.remove("last_value")
+        nodes_list.remove(1)
+        self.assertEqual(len(nodes_list), 0)
 
-    def index(self, node):
-        pass
+    def test_index(self):
+        values = [1, "test", 3, "last_value"]
+        nodes_list = LinkedList(values)
+        self.assertEqual(nodes_list.index(values[0]), 0)
+        self.assertEqual(nodes_list.index(values[len(values) - 1]), len(values) - 1)
+        self.assertEqual(nodes_list.index("test"), 1)
+        self.assertEqual(nodes_list.index(3), 2)
 
-    def extend(self, items):
-        pass
+    def test_extend(self):
+        elements_collection_1 = [1, 2, 3]
+        elements_collection_2 = ["test_val", 5, 6]
+        list_1 = LinkedList(elements_collection_1)
+        list_2 = LinkedList(elements_collection_2)
+        list_1.extend(list_2)
+        self.assertIn("test_val", list_1)
+        self.assertIn(6, list_1)
+        self.assertIn(5, list_1)
+
+    def test_add(self):
+        elements_collection_1 = [1, 2, 3]
+        elements_collection_2 = ["test_val", 5, 6]
+        list_1 = LinkedList(elements_collection_1)
+        list_2 = LinkedList(elements_collection_2)
+        new_list = list_1 + list_2
+        for item in elements_collection_1 + elements_collection_2:
+            self.assertIn(item, new_list)
+        # Исходные коллекции должны остаться нетронутыми
+        self.assertEqual(len(list_1), len(LinkedList(elements_collection_1)))
+        for element in list_1:
+            self.assertIn(element, elements_collection_1)
+            self.assertNotIn(element, elements_collection_2)
+
+    def test_iadd(self):
+        elements_collection_1 = [1, 2, 3]
+        elements_collection_2 = ["test_val", 5, 6]
+        list_1 = LinkedList(elements_collection_1)
+        list_2 = LinkedList(elements_collection_2)
+        list_1 += list_2
+        self.assertIn("test_val", list_1)
+        self.assertIn(6, list_1)
+        self.assertIn(5, list_1)
