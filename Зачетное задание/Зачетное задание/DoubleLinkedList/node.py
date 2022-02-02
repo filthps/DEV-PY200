@@ -20,6 +20,8 @@ class Node:
     @next.setter
     def next(self, val):
         self.is_valid(val)
+        if self is val:
+            raise ValueError
         self._next = val
 
     def __repr__(self):
