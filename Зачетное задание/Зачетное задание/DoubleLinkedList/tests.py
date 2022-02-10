@@ -266,6 +266,16 @@ class TestLinkedNode(unittest.TestCase):
             self.assertIn(element, elements_collection_1)
             self.assertNotIn(element, elements_collection_2)
 
+    def test_add_2(self):
+        elements_collection_1 = [1, 2, 3]
+        elements_collection_2 = ["test_val", 5, 6]
+        list_1 = LinkedList(elements_collection_1)
+        list_2 = LinkedList(elements_collection_2)
+
+        new_list = list_1 + list_2
+
+        self.assertEqual(6, new_list.tail.value)
+
     def test_iadd(self):
         elements_collection_1 = [1, 2, 3]
         elements_collection_2 = ["test_val", 5, 6]
@@ -275,3 +285,21 @@ class TestLinkedNode(unittest.TestCase):
         self.assertIn("test_val", list_1)
         self.assertIn(6, list_1)
         self.assertIn(5, list_1)
+
+    def test_break_head(self):
+        ll = LinkedList([1, 2, 3])
+        ll.head = Node(100)
+
+        self.assertEqual(100, ll.head.value)
+        self.assertEqual(3, len(ll))
+        print(ll)
+        # self.assertEqual(3, ll[2])
+
+    def test_break_head_2(self):
+        ll = LinkedList([])
+        ll.head = Node(100)
+
+        self.assertEqual(1, len(ll))
+
+
+

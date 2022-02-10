@@ -202,7 +202,7 @@ class LinkedList(MutableSequence):
         self.is_valid_nodes_collection(other)
         clone = deepcopy(self)
         self.add_link(clone.tail, other.head)
-        self.clone = other.tail
+        clone._tail = other.tail
         return clone
 
     def __iadd__(self, other):
